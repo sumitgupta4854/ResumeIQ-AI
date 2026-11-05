@@ -19,4 +19,8 @@ app.get('/ready', (req, res) => {
   res.json({ ready, mongo: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' });
 });
 
-app.listen(env.port, () => console.log(`🚀 ResumeIQ server on http://localhost:${env.port}`));
+export default app;
+
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(env.port, () => console.log(`🚀 ResumeIQ server on http://localhost:${env.port}`));
+}
