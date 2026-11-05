@@ -41,3 +41,7 @@ export function createApp() {
   app.use(errorHandler);
   return app;
 }
+
+const app = createApp();
+
+export default app;
