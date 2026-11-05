@@ -25,6 +25,20 @@ export function createApp() {
   const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 50 });
   app.use('/api/auth/', authLimiter);
 
+  app.get('/', (req, res) => {
+    res.json({
+      success: true,
+      data: {
+        service: 'resumeiq-server',
+        status: 'ok',
+        message: 'ResumeIQ AI API is running. Use the endpoints below.',
+        endpoints: ['/api/health', '/ready', '/api/auth', '/api/resumes', '/api/analysis', '/api/jobs', '/api/improve', '/api/dashboard', '/api/candidates']
+      }
+    });
+  });
+
+  app.get('/favicon.ico', (req, res) => res.status(204).end());
+
   app.get('/api/health', (req, res) => {
     res.json({ success: true, data: { status: 'ok', service: 'resumeiq-server', time: new Date().toISOString() } });
   });
