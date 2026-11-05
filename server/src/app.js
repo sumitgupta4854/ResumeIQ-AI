@@ -39,6 +39,10 @@ export function createApp() {
 
   app.get('/favicon.ico', (req, res) => res.status(204).end());
 
+  app.get('/health', (req, res) => {
+    res.json({ success: true, data: { status: 'ok', service: 'resumeiq-server', time: new Date().toISOString() } });
+  });
+
   app.get('/api/health', (req, res) => {
     res.json({ success: true, data: { status: 'ok', service: 'resumeiq-server', time: new Date().toISOString() } });
   });
