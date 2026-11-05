@@ -19,23 +19,26 @@ python -m uvicorn app.main:app --port 8001
 ```
 No virtual environment required — the service runs on your normal system Python.
 
-## 3) Backend
-```bash
-cd server
-npm install
-copy .env.example .env
-# edit .env: MONGODB_URI, JWT_SECRET, FRONTEND_URL, PYTHON_AI_URL
-npm run dev
-# health: http://localhost:5000/api/health
-```
+## Deployment Tips
 
-## 4) Frontend
-```bash
-cd client
-npm install
-copy .env.example .env
-npm run dev  # http://localhost:5173
-```
+### 1) Backend (Node.js) - Vercel
+- **Root Directory:** `server`
+- **Build Command:** `npm install`
+- **Output Directory:** `dist` (if applicable) or leave empty for Express.
+- **Environment Variables:** `MONGODB_URI`, `JWT_SECRET`, `FRONTEND_URL`, `PYTHON_AI_URL`.
+
+### 2) AI Service (Python) - Render / Railway
+- **Root Directory:** `ai-service`
+- **Build Command:** `pip install -r requirements.txt`
+- **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- **Environment Variables:** `LLM_API_KEY` (if using one), `PORT`.
+
+### 3) Client (React) - Vercel / Netlify
+- **Root Directory:** `client`
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
+- **Environment Variables:** `VITE_API_URL` (points to your deployed Backend).
+
 
 ## API docs (selected)
 Auth: POST /api/auth/register {name,email,password}, POST /api/auth/login, GET /api/auth/me (Bearer).

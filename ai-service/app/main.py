@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes.analyze import router
+try:
+    from app.routes.analyze import router
+except ImportError:
+    from .routes.analyze import router
 
 app = FastAPI(title="ResumeIQ AI Service", version="1.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
