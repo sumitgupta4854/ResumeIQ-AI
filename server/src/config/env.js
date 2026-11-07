@@ -20,6 +20,7 @@ const frontendOrigins = Array.from(new Set([
   ...configuredFrontend.split(',').map((s) => s.trim()).filter(Boolean),
   PROD_FRONTEND_URL
 ]));
+const configuredMaxFileSizeMB = num(process.env.MAX_FILE_SIZE_MB, 5);
 
 export const env = {
   port: num(process.env.PORT, 5000),
@@ -28,7 +29,7 @@ export const env = {
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
   frontendUrl: frontendOrigins.join(','),
   pythonAiUrl: (process.env.PYTHON_AI_URL || (isProd ? PROD_AI_URL : 'http://localhost:8001')).replace(/\/$/, ''),
-  maxFileSizeMB: num(process.env.MAX_FILE_SIZE_MB, 5),
+  maxFileSizeMB: process.env.VERCEL ? Math.min(configuredMaxFileSizeMB, 4) : configuredMaxFileSizeMB,
   retainText: String(process.env.RETAIN_RESUME_TEXT || 'true').toLowerCase() !== 'false',
   nodeEnv
 };

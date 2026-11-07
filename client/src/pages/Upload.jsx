@@ -5,6 +5,8 @@ import api from '../services/api.js';
 import ResumeUploader from '../components/ResumeUploader.jsx';
 import { useToast, errMsg } from '../context/ToastContext.jsx';
 
+const MAX_FILE_SIZE_MB = import.meta.env.PROD ? 4 : 5;
+
 export default function Upload() {
   const { success, error } = useToast();
   const nav = useNavigate();
@@ -15,7 +17,7 @@ export default function Upload() {
   const onFile = async (file) => {
     const ok = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
     if (!ok.includes(file.type) && !/\.pdf$|\.docx$/i.test(file.name)) return error('Only PDF and DOCX allowed.');
-    if (file.size > 5 * 1024 * 1024) return error('File too large (max 5MB).');
+    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) return error(`File too large (max ${MAX_FILE_SIZE_MB}MB).`);
     setBusy(true);
     try {
       const fd = new FormData();
