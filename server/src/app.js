@@ -1,10 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import { env } from './config/env.js';
+import { connectDB } from './config/db.js';
 import { errorHandler, notFound } from './middleware/error.js';
 import authRoutes from './routes/auth.js';
 import resumeRoutes from './routes/resumes.js';
@@ -48,9 +48,31 @@ export function createApp() {
     res.json({ success: true, data: { status: 'ok', service: 'resumeiq-server', time: new Date().toISOString() } });
   });
 
-  app.get('/ready', (req, res) => {
-    const connected = mongoose.connection.readyState === 1;
-    res.json({ ready: connected, mongo: connected ? 'connected' : 'disconnected' });
+  app.get('/ready', async (req, res) => {
+    try {
+      await connectDB();
+      res.json({ ready: true, mongo: 'connected' });
+    } catch {
+      res.status(503).json({
+        ready: false,
+        mongo: 'disconnected',
+        mongoUriConfigured: Boolean(process.env.MONGODB_URI),
+        usingLocalMongoFallback: !process.env.MONGODB_URI || /127\.0\.0\.1|localhost/.test(env.mongoUri),
+        usingPlaceholderUri: env.mongoUri.includes('YOUR_USERNAME'),
+        message: 'Check the production MONGODB_URI and MongoDB Atlas Network Access allowlist.'
+      });
+    }
+  });
+
+  app.use(['/api/auth', '/api/resumes', '/api/analysis', '/api/jobs', '/api/improve', '/api/dashboard', '/api/candidates'], async (req, res, next) => {
+    try {
+      await connectDB();
+      next();
+    } catch (error) {
+      error.status = 503;
+      error.message = 'Database unavailable. Check the production MONGODB_URI and MongoDB Atlas Network Access allowlist.';
+      next(error);
+    }
   });
 
   app.use('/api/auth', authRoutes);
