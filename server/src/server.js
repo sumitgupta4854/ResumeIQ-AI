@@ -15,10 +15,6 @@ connectDB()
     console.error('👉 Fix: copy server/.env.example to server/.env and set a valid MONGODB_URI (local or Atlas). Server still serves /api/health.');
   });
 
-app.get('/ready', (req, res) => {
-  res.json({ ready, mongo: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' });
-});
-
 export default app;
 
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {

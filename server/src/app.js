@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import mongoose from 'mongoose';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
@@ -45,6 +46,11 @@ export function createApp() {
 
   app.get('/api/health', (req, res) => {
     res.json({ success: true, data: { status: 'ok', service: 'resumeiq-server', time: new Date().toISOString() } });
+  });
+
+  app.get('/ready', (req, res) => {
+    const connected = mongoose.connection.readyState === 1;
+    res.json({ ready: connected, mongo: connected ? 'connected' : 'disconnected' });
   });
 
   app.use('/api/auth', authRoutes);
