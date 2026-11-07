@@ -350,7 +350,8 @@ label { font-weight: 600; font-size: 14px; display: block; }
 .table tbody tr:hover { background: var(--card-soft); }
 
 /* ---------------- App layout / sidebar ---------------- */
-.layout { display: grid; grid-template-columns: 248px 1fr; min-height: calc(100vh - 68px); max-width: 100%; overflow-x: hidden; align-items: start; }
+.layout { display: grid; grid-template-columns: 248px minmax(0, 1fr); min-height: calc(100vh - 68px); max-width: 100%; overflow-x: hidden; align-items: start; }
+.layout > main { min-width: 0; width: 100%; }
 .sidebar {
   border-right: 1px solid var(--border);
   padding: 22px 14px;
@@ -373,8 +374,27 @@ label { font-weight: 600; font-size: 14px; display: block; }
   font-weight: 700;
   transition: background .15s, color .15s, transform .15s;
 }
+.sidebar a svg { flex: 0 0 auto; }
 .sidebar a:hover { background: var(--card); color: var(--text); transform: translateX(3px); }
 .sidebar a.active { background: var(--grad-primary); color: #fff; box-shadow: var(--glow); }
+
+/* Dashboard overview */
+.dashboard-feature {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.dashboard-feature::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; }
+.dashboard-feature-resume::before { background: var(--grad-primary); }
+.dashboard-feature-candidates::before { background: var(--grad-cool); }
+.dashboard-feature-label { display: inline-flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; font-weight: 700; }
+.dashboard-feature-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; color: var(--indigo); background: color-mix(in srgb, var(--indigo) 10%, var(--bg-soft)); }
+.dashboard-feature p { color: var(--muted); line-height: 1.6; }
+.dashboard-feature .btn-primary { background: var(--indigo); box-shadow: none; }
+.dashboard-feature .btn-primary:hover { background: #5b21b6; }
+[data-theme="dark"] .dashboard-feature-icon { color: #c4b5fd; background: rgba(167, 139, 250, .16); }
+
 @media (max-width: 820px) {
   .layout { grid-template-columns: 1fr; }
   .sidebar {
@@ -389,13 +409,17 @@ label { font-weight: 600; font-size: 14px; display: block; }
     padding: 10px;
     z-index: 10;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
-  .sidebar a { white-space: nowrap; padding: 10px 14px; }
+  .sidebar::-webkit-scrollbar { display: none; }
+  .sidebar a { flex: 0 0 auto; white-space: nowrap; padding: 10px 14px; }
+  .sidebar a.active { background: color-mix(in srgb, var(--indigo) 11%, var(--card)); color: var(--indigo); box-shadow: none; }
   .sidebar > div:last-child { display: none; }
 }
+[data-theme="dark"] .sidebar a.active { color: #c4b5fd; }
 @media (max-width: 480px) {
   .container { padding: 0 14px; }
-  .section { padding: 26px 0; }
+  .section { padding: 24px 0; }
   .card { padding: 16px; }
   .grid { gap: 14px; }
   .hero { padding: 44px 0 24px; }
@@ -405,7 +429,27 @@ label { font-weight: 600; font-size: 14px; display: block; }
   .hero-cta .btn { width: 100%; }
   .gauge-wrap { gap: 14px; justify-content: center; }
   .score-bars .row { grid-template-columns: 70px 1fr 38px; }
-  .nav-inner { height: 60px; }
+  .nav-inner { height: 58px; }
+  .brand { gap: 7px; font-size: 17px; }
+  .nav-inner > div { gap: 2px !important; }
+  .nav-inner > div .btn { min-height: 36px; padding: 8px 9px !important; font-size: 12px; }
+  .nav-inner > div .nav-action { width: 36px; min-width: 36px; padding: 8px !important; }
+  .nav-inner > div .nav-action span { display: none; }
+  .brand-text { white-space: nowrap; }
+  .layout > main.section { padding: 22px 14px; }
+  .dashboard-feature h3 { font-size: 19px !important; }
+  .dashboard-feature .btn { min-height: 40px; }
+  .stat-card { min-height: 130px; }
+  .input, .textarea, .select { font-size: 16px; }
+}
+@media (max-width: 360px) {
+  .brand-text { display: none; }
+  .brand > span:first-child { width: 32px !important; height: 32px !important; }
+  .nav-inner > div .nav-action { width: 34px; min-width: 34px; padding: 8px !important; }
+  .nav-inner > div .nav-theme-button { width: 34px; min-width: 34px; padding: 8px !important; }
+  .sidebar { padding: 8px; gap: 4px; }
+  .sidebar a { gap: 7px; padding: 9px 11px; font-size: 13px; }
+  .layout > main.section { padding-right: 12px; padding-left: 12px; }
 }
 
 /* ---------------- Gauge / progress ---------------- */

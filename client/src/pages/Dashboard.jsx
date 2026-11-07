@@ -35,17 +35,17 @@ export default function Dashboard() {
     <div className="grid">
       <h2 style={{ margin: 0 }}>Welcome back, {user?.name}</h2>
       <div className="grid grid-2">
-        <div className="card card-glow" style={{ background: 'var(--grad-primary)', color: '#fff', border: 'none', boxShadow: 'var(--shadow-lg)' }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontWeight: 800, fontSize: 13, opacity: .95 }}><FileText size={17} /> Resume Analysis</span>
+        <div className="card dashboard-feature dashboard-feature-resume">
+          <span className="dashboard-feature-label"><span className="dashboard-feature-icon"><FileText size={17} /></span> Resume Analysis</span>
           <h3 style={{ margin: '8px 0 4px', fontSize: 22 }}>Score &amp; improve your resume</h3>
-          <p style={{ margin: '0 0 16px', opacity: .95 }}>Upload a resume to get an AI score, skill gaps and improvement suggestions.</p>
-          <Link className="btn" to="/app/upload"><Upload size={16} /> Upload Resume</Link>
+          <p style={{ margin: '0 0 16px' }}>Upload a resume to get an AI score, skill gaps and improvement suggestions.</p>
+          <Link className="btn btn-primary" to="/app/upload"><Upload size={16} /> Upload Resume</Link>
         </div>
-        <div className="card card-glow" style={{ background: 'var(--grad-sunset)', color: '#fff', border: 'none', boxShadow: 'var(--shadow-lg)' }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontWeight: 800, fontSize: 13, opacity: .95 }}><Users size={17} /> AI Candidate Search</span>
+        <div className="card dashboard-feature dashboard-feature-candidates">
+          <span className="dashboard-feature-label"><span className="dashboard-feature-icon"><Users size={17} /></span> AI Candidate Search</span>
           <h3 style={{ margin: '8px 0 4px', fontSize: 22 }}>Find the right candidates</h3>
-          <p style={{ margin: '0 0 16px', opacity: .95 }}>Describe your hiring needs in plain language and rank matching candidates from the database.</p>
-          <Link className="btn" to="/app/candidates"><Sparkles size={16} /> Find Candidates</Link>
+          <p style={{ margin: '0 0 16px' }}>Describe your hiring needs in plain language and rank matching candidates from the database.</p>
+          <Link className="btn btn-primary" to="/app/candidates"><Sparkles size={16} /> Find Candidates</Link>
         </div>
       </div>
       <div className="grid grid-4">
